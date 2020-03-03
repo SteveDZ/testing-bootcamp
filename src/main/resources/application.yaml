@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    password: password
+    url: jdbc:postgresql://localhost:5432/testing_bootcamp
+    username: testing_bootcamp
+    platform: psql

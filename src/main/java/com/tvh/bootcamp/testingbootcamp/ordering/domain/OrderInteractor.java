@@ -4,9 +4,9 @@ import java.util.UUID;
 
 public interface OrderInteractor {
 
-    void add(Product product, int amount);
+    Order createOrUpdate(Order order);
 
-    void add(UUID orderId, Product product, int amount);
+    Order find(UUID orderId);
 
     void place(UUID orderId);
 

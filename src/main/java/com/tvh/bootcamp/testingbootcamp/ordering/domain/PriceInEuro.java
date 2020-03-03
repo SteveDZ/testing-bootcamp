@@ -14,6 +14,18 @@ public class PriceInEuro {
         return this.price;
     }
 
+    public PriceInEuro add(PriceInEuro amountToAdd) {
+        return new PriceInEuro(this.price.add(amountToAdd.getPrice()));
+    }
+
+    public PriceInEuro subtract(PriceInEuro amountToSubtract) {
+        return new PriceInEuro(this.price.subtract(amountToSubtract.getPrice()));
+    }
+
+    public PriceInEuro multiply(int multiplicand) {
+        return new PriceInEuro(this.price.multiply(new BigDecimal(multiplicand)));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

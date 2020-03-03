@@ -1,5 +1,6 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.infrastructure;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -7,26 +8,22 @@ import java.util.UUID;
 import com.tvh.bootcamp.testingbootcamp.ordering.domain.Order;
 import com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderRepository;
 
-//@Component
+import org.springframework.stereotype.Component;
+
+@Component
 public class InMemoryOrderRepository implements OrderRepository {
 
-    private Map<UUID, OrderEntity> orders;
+    private Map<UUID, Order> orders = new HashMap<>();
 
     @Override
     public Order save(Order order) {
-        orders.put(order.getOrderId(), OrderEntity.fromOrder(order));
+        orders.put(order.getOrderId(), order);
+
         return order;
     }
 
     @Override
     public Optional<Order> findById(UUID id) {
-        Optional<OrderEntity> orderEntity =
-                orders.entrySet()
-                        .stream()
-                        .filter(orderEntry -> id.equals(orderEntry.getKey()))
-                        .map(entry -> entry.getValue())
-                        .findFirst();
-
-        return orderEntity.map(OrderEntity::toOrder);
+        return Optional.ofNullable(orders.get(id));
     }
 }

@@ -3,10 +3,13 @@ package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Carrier.DHL;
 
-//@Transactional
-//@Service
+@Transactional
+@Service
 public class OrderService implements OrderInteractor {
 
     private final OrderRepository orderRepository;
@@ -15,17 +18,28 @@ public class OrderService implements OrderInteractor {
         this.orderRepository = orderRepository;
     }
 
+//    @Override
+//    public void add(Product product, int amount) {
+//        Order order = Order.newOrder().add(product, amount);
+//        this.orderRepository.save(order);
+//    }
+//
+//    @Override
+//    public void add(UUID orderId, Product product, int amount) {
+//        Optional<Order> orderById = this.orderRepository.findById(orderId);
+//
+//        orderById.map(order -> this.orderRepository.save(order.add(product, amount))).orElseThrow();
+//    }
+
+
     @Override
-    public void add(Product product, int amount) {
-        Order order = Order.newOrder().add(product, amount);
-        this.orderRepository.save(order);
+    public Order createOrUpdate(Order order) {
+        return this.orderRepository.save(order);
     }
 
     @Override
-    public void add(UUID orderId, Product product, int amount) {
-        Optional<Order> orderById = this.orderRepository.findById(orderId);
-
-        orderById.map(order -> this.orderRepository.save(order.add(product, amount))).orElseThrow();
+    public Order find(UUID orderId) {
+        return this.orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException(String.format("Order with id %s not found", orderId)));
     }
 
     @Override

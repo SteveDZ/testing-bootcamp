@@ -1,16 +1,14 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
-import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.CREATED;
-import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.ORDERED;
-import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.PICKED;
-import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.SHIPPED;
-import static com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderLine.*;
+import org.apache.logging.log4j.util.Strings;
+
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderLine.forProductAndAmount;
 
 public class Order {
     private UUID orderId;
@@ -18,11 +16,11 @@ public class Order {
     private OrderStatus orderStatus;
     private PriceInEuro orderPrice;
 
-    private Order() {
-        this.orderId = UUID.randomUUID();
-        this.orderLines = new ArrayList<>();
+    private Order(Builder builder) {
+        this.orderId = builder.orderId;
+        this.orderLines = builder.orderLines;
         this.orderStatus = OrderStatus.CREATED;
-        this.orderPrice = new PriceInEuro(new BigDecimal(0.00));
+        this.orderPrice = builder.orderPrice;
     }
 
     public UUID getOrderId() {
@@ -49,8 +47,8 @@ public class Order {
         return false;
     }
 
-    public static Order newOrder() {
-        return new Order();
+    public List<OrderLine> getOrderLines() {
+        return this.orderLines;
     }
 
     public Order add(Product product, int amount) {
@@ -71,7 +69,7 @@ public class Order {
                 .findFirst()
                 .ifPresent(orderLine -> orderLine.pick());
 
-        if(this.orderLines.stream().allMatch(orderLine -> orderLine.isPicked())) {
+        if (this.orderLines.stream().allMatch(orderLine -> orderLine.isPicked())) {
             this.orderStatus = OrderStatus.PICKED;
         }
 
@@ -112,7 +110,35 @@ public class Order {
                 '}';
     }
 
-    static enum OrderStatus {
+    public static class Builder {
+        private UUID orderId;
+        private List<OrderLine> orderLines;
+        private PriceInEuro orderPrice = new PriceInEuro(new BigDecimal(0.00));
+
+        public Builder() {
+        }
+
+        public Builder withId(String id) {
+            if (Strings.isNotEmpty(id)) {
+                this.orderId = UUID.fromString(id);
+            } else {
+                this.orderId = UUID.randomUUID();
+            }
+            return this;
+        }
+
+        public Builder addOrderLine(List<OrderLine> orderLines) {
+            this.orderLines = Optional.ofNullable(orderLines).orElse(null);
+            orderLines.forEach(orderLine -> this.orderPrice = this.orderPrice.add(orderLine.getProduct().getPrice().multiply(orderLine.getAmount())));
+            return this;
+        }
+
+        public Order build() {
+            return new Order(this);
+        }
+    }
+
+    public enum OrderStatus {
         CREATED,
         ORDERED,
         PICKED,

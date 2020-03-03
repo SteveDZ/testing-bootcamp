@@ -1,6 +1,5 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,7 +32,7 @@ public class OrderLine {
         return this.status == OrderLineStatus.PICKED;
     }
 
-    static OrderLine forProductAndAmount(Product product, int amount) {
+    public static OrderLine forProductAndAmount(Product product, int amount) {
 //        validation on negative amounts;
         return new OrderLine(product, amount);
     }
