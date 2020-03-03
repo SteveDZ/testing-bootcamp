@@ -18,20 +18,6 @@ public class OrderService implements OrderInteractor {
         this.orderRepository = orderRepository;
     }
 
-//    @Override
-//    public void add(Product product, int amount) {
-//        Order order = Order.newOrder().add(product, amount);
-//        this.orderRepository.save(order);
-//    }
-//
-//    @Override
-//    public void add(UUID orderId, Product product, int amount) {
-//        Optional<Order> orderById = this.orderRepository.findById(orderId);
-//
-//        orderById.map(order -> this.orderRepository.save(order.add(product, amount))).orElseThrow();
-//    }
-
-
     @Override
     public Order createOrUpdate(Order order) {
         return this.orderRepository.save(order);
