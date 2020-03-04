@@ -71,7 +71,7 @@ public class OrderLine {
                 '}';
     }
 
-    static enum OrderLineStatus {
+    enum OrderLineStatus {
         CREATED,
         PICKED,
     }
