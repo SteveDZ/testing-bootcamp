@@ -1,51 +1,35 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
-import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
-
-import com.tvh.bootcamp.testingbootcamp.ordering.infrastructure.InMemoryOrderRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class OrderServiceWithoutMockingTest {
 
     @Test
     void create_Order() {
-        //Arrange
-        OrderService orderService = new OrderService(new InMemoryOrderRepository());
-        Order order = new Order.Builder().build();
+        //Arrange - Set up an orderService which used an InMemoryOrderRepository and
+        //        - Create a new Order
 
-        //Act
-        Order savedOrder = orderService.createOrUpdate(order);
+        //Act - Execute orderService#createOrUpdate with the previously set up order. Capture the result.
 
-        //Assert
-        assertThat(savedOrder).isEqualTo(order);
+        //Assert - Assert that the captured resulting order is the same as the saved order from the arrange section
     }
 
     @Test
     void find_Order() {
-        //Arrange
-        OrderService orderService = new OrderService(new InMemoryOrderRepository());
-        UUID orderId = UUID.randomUUID();
-        Order order = new Order.Builder().withId(orderId.toString()).build();
-        orderService.createOrUpdate(order);
+        //Arrange - Set up an orderService which used an InMemoryOrderRepository and
+        //        - Create a new Order and
+        //        - Save the order
 
-        //Act
-        Order foundOrder = orderService.find(orderId);
+        //Act - Execute orderService#find with the orderId of the order we previously saved
 
-        //Assert
-        assertThat(foundOrder).isEqualTo(order);
+        //Assert - verify that we find an Order AND that it is the same order we saved in the Arrange section
     }
 
     @Test
     void cannot_find_an_Order_with_unknown_id() {
-        //Arrange
-        OrderService orderService = new OrderService(new InMemoryOrderRepository());
-        UUID unknownOrderId = UUID.randomUUID();
+        //Arrange - Set up an orderService which used an InMemoryOrderRepository and
+        //        - Create a random UUID
 
-        //Act + Assert
-        assertThatThrownBy(() -> orderService.find(unknownOrderId)).isInstanceOf(OrderNotFoundException.class);
+        //Act + Assert - AssertThat orderService#find with the random UUID results in an OrderNotFoundException being thrown
     }
 }

@@ -1,71 +1,39 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-//RunWith(MockitoJUnitRunner.class)
-@ExtendWith(MockitoExtension.class)
+//Extend this class with MockitoExtensions In order for the Mockito annotations to be processed.
 class OrderServiceTest {
 
-    @Mock
-    private OrderRepository orderRepository;
+    //Create OrderRepository mock
 
-    @InjectMocks
-    private OrderService orderService;
+    //Create Mockito fixture. Make sure the Mocks are being injected in the fixture
 
     @Test
     void create_Order() {
-        //Arrange
-        Order order = new Order.Builder().build();
-        when(this.orderRepository.save(order)).thenReturn(order);
+        //Arrange - Create an order and mock the orderRepository#save call
 
-        //Act
-        Order savedOrder = this.orderService.createOrUpdate(order);
+        //Act - Execute orderService#createOrUpdate with the order we previously set up.
 
-        //Assert
-        assertThat(savedOrder).isEqualTo(order);
-        verify(this.orderRepository).save(order);
+        //Assert - assert that the saved order is the same as the order we've set up in the Arrange section and which is being returned by our orderRepository mock.
+        //Assert - verify that the orderRepository#save call was executed
     }
 
     @Test
     void find_Order() {
-        //Arrange
-        UUID orderId = UUID.randomUUID();
-        Order order = new Order.Builder().withId(orderId.toString()).build();
-        when(this.orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        //Arrange - Create an order and mock the orderRepository#findById call
 
-        //Act
-        Order foundOrder = this.orderService.find(orderId);
+        //Act - Execute the orderService#find call with the order we previously set up
 
-        //Assert
-        assertThat(foundOrder).isEqualTo(order);
+        //Assert - assert that the order we found is the same as the order being returned from our orderRepository mock
     }
 
     @Test
     void cannot_find_an_Order_with_unknown_id() {
-        //Arrange
-        UUID unknownOrderId = UUID.randomUUID();
+        //Arrange - Create an unknown UUID
 
-        //Act
-        assertThatThrownBy(() -> this.orderService.find(unknownOrderId)).isInstanceOf(OrderNotFoundException.class);
+        //Act - assert that an exception is being thrown when orderService#find is being called with an unknown order UUID
 
-        //Assert
-        verify(this.orderRepository).findById(unknownOrderId);
+        //Assert - verify that the orderRepository#findById method was called with our unknown orderId
     }
-
-    //Write unit tests for
-    //place
-    //pickLine
-    //ship
 }
