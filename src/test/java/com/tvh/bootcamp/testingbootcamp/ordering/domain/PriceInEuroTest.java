@@ -5,10 +5,6 @@ import org.junit.jupiter.api.Test;
 class PriceInEuroTest {
 
     @Test
-    void getPrice() {
-    }
-
-    @Test
     void add() {
     }
 
