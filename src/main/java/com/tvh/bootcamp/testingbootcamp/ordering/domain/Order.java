@@ -40,7 +40,7 @@ public class Order {
     }
 
     public boolean isPicked() {
-        return false;
+        return this.orderStatus == PICKED;
     }
 
     public boolean isReadyForShipment() {
