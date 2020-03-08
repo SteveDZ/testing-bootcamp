@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-//RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
 
