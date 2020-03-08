@@ -8,6 +8,10 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.util.Strings;
 
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.CREATED;
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.ORDERED;
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.PICKED;
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.SHIPPED;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderLine.forProductAndAmount;
 
 public class Order {
@@ -19,7 +23,7 @@ public class Order {
     private Order(Builder builder) {
         this.orderId = builder.orderId;
         this.orderLines = builder.orderLines;
-        this.orderStatus = OrderStatus.CREATED;
+        this.orderStatus = CREATED;
         this.orderPrice = builder.orderPrice;
     }
 
@@ -36,7 +40,7 @@ public class Order {
     }
 
     public boolean isPicked() {
-        return false;
+        return this.orderStatus == PICKED;
     }
 
     public boolean isReadyForShipment() {
@@ -52,14 +56,20 @@ public class Order {
     }
 
     public Order add(Product product, int amount) {
-        //When order is beyond created, throw exception
+        if (this.orderAlreadyPicked()) {
+            throw new IllegalStateException("Can't add lines to an already PICKED Order");
+        }
+
         this.orderLines.add(forProductAndAmount(product, amount));
         return this;
     }
 
+    private boolean orderAlreadyPicked() {
+        return this.orderStatus != CREATED;
+    }
+
     public Order place() {
-        this.orderStatus = OrderStatus.ORDERED;
-        //return OrderPlaced Event;
+        this.orderStatus = ORDERED;
         return this;
     }
 
@@ -70,15 +80,14 @@ public class Order {
                 .ifPresent(orderLine -> orderLine.pick());
 
         if (this.orderLines.stream().allMatch(orderLine -> orderLine.isPicked())) {
-            this.orderStatus = OrderStatus.PICKED;
+            this.orderStatus = PICKED;
         }
 
         return this;
     }
 
     public Order ship(Carrier carrier) {
-        this.orderStatus = OrderStatus.SHIPPED;
-        //return OrderShipped Event;
+        this.orderStatus = SHIPPED;
         return this;
     }
 
