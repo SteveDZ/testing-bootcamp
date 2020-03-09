@@ -29,6 +29,14 @@ public class Order {
         return new Order(UUID.randomUUID(), new ArrayList<>(), new PriceInEuro(new BigDecimal(0.00)));
     }
 
+    public static Order newOrderWithLines(List<OrderLine> orderLines) {
+        PriceInEuro orderPrice = orderLines.stream()
+                .map(OrderLine::getPrice)
+                .reduce(new PriceInEuro(new BigDecimal(0.00)), PriceInEuro::add);
+
+        return new Order(UUID.randomUUID(), orderLines, orderPrice);
+    }
+
     public UUID getOrderId() {
         return this.orderId;
     }
