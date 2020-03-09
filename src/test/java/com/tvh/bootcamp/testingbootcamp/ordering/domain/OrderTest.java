@@ -18,7 +18,7 @@ class OrderTest {
 
     @BeforeEach
     public void setUp() {
-        //Remove this line!
+        //Remove this order setup!
         this.order = Order.newOrder();
         order.add(ENGINE, 2);
         this.orderLine = order.getOrderLines().get(0);

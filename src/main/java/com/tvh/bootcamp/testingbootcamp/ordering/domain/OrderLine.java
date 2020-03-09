@@ -32,6 +32,10 @@ public class OrderLine {
         return this.status == OrderLineStatus.PICKED;
     }
 
+    public PriceInEuro getPrice() {
+        return this.product.getPrice().multiply(this.amount);
+    }
+
     static OrderLine forProductAndAmount(Product product, int amount) {
 //        validation on negative amounts;
         return new OrderLine(product, amount);

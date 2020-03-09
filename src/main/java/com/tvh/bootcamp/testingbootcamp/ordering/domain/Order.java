@@ -12,7 +12,7 @@ import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.SHIPPED;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderLine.forProductAndAmount;
 
-public class Order {
+class Order {
     private UUID orderId;
     private List<OrderLine> orderLines;
     private OrderStatus orderStatus;
@@ -27,6 +27,14 @@ public class Order {
 
     public static Order newOrder() {
         return new Order(UUID.randomUUID(), new ArrayList<>(), new PriceInEuro(new BigDecimal(0.00)));
+    }
+
+    public static Order orderWithOrderLines(List<OrderLine> orderLines) {
+        PriceInEuro orderPrice = orderLines.stream()
+                .map(orderLine -> orderLine.getPrice())
+                .reduce(new PriceInEuro(new BigDecimal(0.00)), PriceInEuro::add);
+
+        return new Order(UUID.randomUUID(), orderLines, orderPrice);
     }
 
     public UUID getOrderId() {
