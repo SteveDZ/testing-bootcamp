@@ -1,8 +1,11 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Product.ENGINE;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Product.SPARK_PLUG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -15,6 +18,11 @@ class OrderTest {
 
     @BeforeEach
     public void setUp() {
+        //Remove this line!
+        this.order = Order.newOrder();
+        order.add(ENGINE, 2);
+        this.orderLine = order.getOrderLines().get(0);
+
         //Create OrderLine for ENGINE and amount 2
 
         //Create Order using the OrderMother#anOrderWithOneLine method
@@ -47,5 +55,12 @@ class OrderTest {
 
         //Act + Assert
         assertThatThrownBy(() -> pickedOrder.add(SPARK_PLUG, 1)).isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    public void adding_lines_recalculate_order_price() {
+        Order newOrder = this.order.add(SPARK_PLUG, 2);
+
+        assertThat(newOrder.getOrderPrice()).isEqualTo(new PriceInEuro(new BigDecimal(21_000.00)));
     }
 }

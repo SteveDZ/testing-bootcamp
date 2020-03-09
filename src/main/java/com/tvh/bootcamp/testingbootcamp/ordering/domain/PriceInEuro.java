@@ -42,4 +42,11 @@ public class PriceInEuro {
     public int hashCode() {
         return Objects.hash(price);
     }
+
+    @Override
+    public String toString() {
+        return "PriceInEuro{" +
+                "price=" + price +
+                '}';
+    }
 }

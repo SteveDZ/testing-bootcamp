@@ -26,7 +26,7 @@ class OrderServiceTest {
     @Test
     void create_Order() {
         //Arrange
-        Order order = new Order.Builder().build();
+        Order order = Order.newOrder();
         when(this.orderRepository.save(order)).thenReturn(order);
 
         //Act
@@ -40,8 +40,8 @@ class OrderServiceTest {
     @Test
     void find_Order() {
         //Arrange
-        UUID orderId = UUID.randomUUID();
-        Order order = new Order.Builder().withId(orderId.toString()).build();
+        Order order = Order.newOrder();
+        UUID orderId = order.getOrderId();
         when(this.orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
         //Act

@@ -22,7 +22,7 @@ public class OrderServiceWithoutMockingTest {
     @Test
     void create_Order() {
         //Arrange
-        Order order = new Order.Builder().build();
+        Order order = Order.newOrder();
 
         //Act
         Order savedOrder = orderService.createOrUpdate(order);
@@ -34,8 +34,8 @@ public class OrderServiceWithoutMockingTest {
     @Test
     void find_Order() {
         //Arrange
-        UUID orderId = UUID.randomUUID();
-        Order order = new Order.Builder().withId(orderId.toString()).build();
+        Order order = Order.newOrder();
+        UUID orderId = order.getOrderId();
         orderService.createOrUpdate(order);
 
         //Act

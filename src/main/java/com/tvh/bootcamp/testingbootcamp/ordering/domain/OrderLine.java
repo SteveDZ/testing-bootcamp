@@ -32,7 +32,7 @@ public class OrderLine {
         return this.status == OrderLineStatus.PICKED;
     }
 
-    public static OrderLine forProductAndAmount(Product product, int amount) {
+    static OrderLine forProductAndAmount(Product product, int amount) {
 //        validation on negative amounts;
         return new OrderLine(product, amount);
     }
