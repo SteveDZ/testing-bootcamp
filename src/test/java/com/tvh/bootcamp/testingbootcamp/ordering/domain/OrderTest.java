@@ -23,7 +23,7 @@ class OrderTest {
     public void setUp() {
         //Create OrderLine for ENGINE and amount 2
         this.orderLine = forProductAndAmount(ENGINE, 2);
-        //Create Order using the OrderBuilder
+        //Create Order using the OrderBuilder with the one OrderLine created previously
         this.order = new OrderBuilder()
                 .withOrderLines(new ArrayList<>(List.of(this.orderLine)))
                 .build();
@@ -59,11 +59,12 @@ class OrderTest {
 
     @Test
     public void adding_lines_recalculate_order_price() {
-        this.order = new OrderBuilder()
-                .withOrderLines(new ArrayList<>(List.of(forProductAndAmount(ENGINE, 2), forProductAndAmount(SPARK_PLUG, 2))))
-                .picked()
-                .build();
+        //Arrange completely moved to BeforeEach method
 
+        //Act - Add OrderLine with 2 SPARK_PLUGS
+        this.order = this.order.add(SPARK_PLUG, 2);
+
+        //Assert that the created Order price is 21000
         assertThat(this.order.getOrderPrice()).isEqualTo(new PriceInEuro(new BigDecimal(21_000.00)));
     }
 }
