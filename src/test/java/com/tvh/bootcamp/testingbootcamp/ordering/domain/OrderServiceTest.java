@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.newOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -26,7 +27,7 @@ class OrderServiceTest {
     @Test
     void create_Order() {
         //Arrange
-        Order order = new Order.Builder().build();
+        Order order = newOrder();
         when(this.orderRepository.save(order)).thenReturn(order);
 
         //Act
@@ -40,8 +41,8 @@ class OrderServiceTest {
     @Test
     void find_Order() {
         //Arrange
-        UUID orderId = UUID.randomUUID();
-        Order order = new Order.Builder().withId(orderId.toString()).build();
+        Order order = newOrder();
+        UUID orderId = order.getOrderId();
         when(this.orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
         //Act

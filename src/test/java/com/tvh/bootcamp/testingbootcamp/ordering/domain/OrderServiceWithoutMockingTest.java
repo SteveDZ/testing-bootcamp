@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.tvh.bootcamp.testingbootcamp.ordering.infrastructure.InMemoryOrderRepository;
 
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.newOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -25,7 +26,7 @@ public class OrderServiceWithoutMockingTest {
         //Remove the OrderService creation logic
         //Arrange
         OrderService orderService = new OrderService(new InMemoryOrderRepository());
-        Order order = new Order.Builder().build();
+        Order order = newOrder();
 
         //Act
         Order savedOrder = orderService.createOrUpdate(order);
@@ -38,13 +39,12 @@ public class OrderServiceWithoutMockingTest {
     void find_Order() {
         //Remove the OrderService creation logic
         //Arrange
-        this.orderService = new OrderService(new InMemoryOrderRepository());
-        UUID orderId = UUID.randomUUID();
-        Order order = new Order.Builder().withId(orderId.toString()).build();
+        OrderService orderService = new OrderService(new InMemoryOrderRepository());
+        Order order = newOrder();
         orderService.createOrUpdate(order);
 
         //Act
-        Order foundOrder = orderService.find(orderId);
+        Order foundOrder = orderService.find(order.getOrderId());
 
         //Assert
         assertThat(foundOrder).isEqualTo(order);
@@ -54,7 +54,7 @@ public class OrderServiceWithoutMockingTest {
     void cannot_find_an_Order_with_unknown_id() {
         //Remove the OrderService creation logic
         //Arrange
-        this.orderService = new OrderService(new InMemoryOrderRepository());
+        OrderService orderService = new OrderService(new InMemoryOrderRepository());
         UUID unknownOrderId = UUID.randomUUID();
 
         //Act + Assert
