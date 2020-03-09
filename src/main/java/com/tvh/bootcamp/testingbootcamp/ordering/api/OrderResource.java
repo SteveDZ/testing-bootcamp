@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.tvh.bootcamp.testingbootcamp.ordering.domain.Order;
-import com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderLine;
 import com.tvh.bootcamp.testingbootcamp.ordering.domain.Product;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -53,14 +52,10 @@ public class OrderResource {
     }
 
     Order toOrder() {
-        return new Order.Builder()
-                .withId(this.id)
-                .addOrderLine(
-                        this.orderLines.stream()
-                                .map(orderLineResource -> OrderLine.forProductAndAmount(Product.valueOf(orderLineResource.getProduct()), orderLineResource.getAmount()))
-                                .collect(toList())
-                )
-                .build();
+        Order order = Order.newOrder();
+        this.orderLines.forEach(orderLineResource -> order.add(Product.valueOf(orderLineResource.getProduct()), orderLineResource.getAmount()));
+
+        return order;
     }
 
     static OrderResource fromOrder(Order order) {
