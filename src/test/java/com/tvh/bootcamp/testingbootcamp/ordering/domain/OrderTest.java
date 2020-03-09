@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderMother.anOrderWithOneLine;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Product.ENGINE;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Product.SPARK_PLUG;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,15 +19,10 @@ class OrderTest {
 
     @BeforeEach
     public void setUp() {
-        //Remove this order setup!
-        this.order = Order.newOrder();
-        order.add(ENGINE, 2);
-        this.orderLine = order.getOrderLines().get(0);
-
         //Create OrderLine for ENGINE and amount 2
-
+        this.orderLine = OrderLine.forProductAndAmount(ENGINE, 2);
         //Create Order using the OrderMother#anOrderWithOneLine method
-
+        this.order = anOrderWithOneLine(this.orderLine);
     }
 
     @Test

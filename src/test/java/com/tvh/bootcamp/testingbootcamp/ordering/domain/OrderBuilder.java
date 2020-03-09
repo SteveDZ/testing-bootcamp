@@ -3,7 +3,7 @@ package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 import java.util.List;
 
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.newOrder;
-import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.orderWithOrderLines;
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.newOrderWithLines;
 
 public class OrderBuilder {
 
@@ -13,7 +13,7 @@ public class OrderBuilder {
     }
 
     public OrderBuilder withOrderLines(List<OrderLine> orderLines) {
-        this.order = orderWithOrderLines(orderLines);
+        this.order = newOrderWithLines(orderLines);
         return this;
     }
 

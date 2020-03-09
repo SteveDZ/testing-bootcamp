@@ -12,7 +12,7 @@ import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.SHIPPED;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderLine.forProductAndAmount;
 
-class Order {
+public class Order {
     private UUID orderId;
     private List<OrderLine> orderLines;
     private OrderStatus orderStatus;
