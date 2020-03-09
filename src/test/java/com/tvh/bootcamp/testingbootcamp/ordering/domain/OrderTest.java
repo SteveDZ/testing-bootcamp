@@ -1,11 +1,13 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderMother.anOrderWithOneLine;
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.OrderLine.forProductAndAmount;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Product.ENGINE;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Product.SPARK_PLUG;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,9 +22,11 @@ class OrderTest {
     @BeforeEach
     public void setUp() {
         //Create OrderLine for ENGINE and amount 2
-        this.orderLine = OrderLine.forProductAndAmount(ENGINE, 2);
+        this.orderLine = forProductAndAmount(ENGINE, 2);
         //Create Order using the OrderMother#anOrderWithOneLine method
-        this.order = anOrderWithOneLine(this.orderLine);
+        this.order = new OrderBuilder()
+                .withOrderLines(new ArrayList<>(List.of(this.orderLine)))
+                .build();
     }
 
     @Test
@@ -55,8 +59,11 @@ class OrderTest {
 
     @Test
     public void adding_lines_recalculate_order_price() {
-        Order newOrder = this.order.add(SPARK_PLUG, 2);
+        this.order = new OrderBuilder()
+                .withOrderLines(new ArrayList<>(List.of(forProductAndAmount(ENGINE, 2), forProductAndAmount(SPARK_PLUG, 2))))
+                .picked()
+                .build();
 
-        assertThat(newOrder.getOrderPrice()).isEqualTo(new PriceInEuro(new BigDecimal(21_000.00)));
+        assertThat(this.order.getOrderPrice()).isEqualTo(new PriceInEuro(new BigDecimal(21_000.00)));
     }
 }
