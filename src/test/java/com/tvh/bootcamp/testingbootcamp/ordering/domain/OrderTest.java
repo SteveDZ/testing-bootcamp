@@ -1,9 +1,5 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,10 +19,9 @@ class OrderTest {
     public void setUp() {
         //Create OrderLine for ENGINE and amount 2
         this.orderLine = forProductAndAmount(ENGINE, 2);
-        //Create Order using the OrderMother#anOrderWithOneLine method
-        this.order = new OrderBuilder()
-                .withOrderLines(new ArrayList<>(List.of(this.orderLine)))
-                .build();
+
+        //Create Order using the OrderBuilder with the one OrderLine created previously
+
     }
 
     @Test
@@ -59,11 +54,10 @@ class OrderTest {
 
     @Test
     public void adding_lines_recalculate_order_price() {
-        this.order = new OrderBuilder()
-                .withOrderLines(new ArrayList<>(List.of(forProductAndAmount(ENGINE, 2), forProductAndAmount(SPARK_PLUG, 2))))
-                .picked()
-                .build();
+        //Arrange completely moved to BeforeEach method
 
-        assertThat(this.order.getOrderPrice()).isEqualTo(new PriceInEuro(new BigDecimal(21_000.00)));
+        //Act - Add OrderLine with 2 SPARK_PLUGS
+
+        //Assert that the created Order price is 21000
     }
 }
