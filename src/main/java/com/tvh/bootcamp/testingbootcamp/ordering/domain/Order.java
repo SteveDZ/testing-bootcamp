@@ -1,12 +1,10 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
-
-import org.apache.logging.log4j.util.Strings;
 
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.CREATED;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.OrderStatus.ORDERED;
@@ -20,11 +18,15 @@ public class Order {
     private OrderStatus orderStatus;
     private PriceInEuro orderPrice;
 
-    private Order(Builder builder) {
-        this.orderId = builder.orderId;
-        this.orderLines = builder.orderLines;
+    private Order(UUID orderId, List<OrderLine> orderLines, PriceInEuro orderPrice) {
+        this.orderId = orderId;
+        this.orderLines = orderLines;
         this.orderStatus = CREATED;
-        this.orderPrice = builder.orderPrice;
+        this.orderPrice = orderPrice;
+    }
+
+    public static Order newOrder() {
+        return new Order(UUID.randomUUID(), new ArrayList<>(), new PriceInEuro(new BigDecimal(0.00)));
     }
 
     public UUID getOrderId() {
@@ -117,34 +119,6 @@ public class Order {
                 ", orderLines=" + orderLines +
                 ", orderStatus=" + orderStatus +
                 '}';
-    }
-
-    public static class Builder {
-        private UUID orderId;
-        private List<OrderLine> orderLines;
-        private PriceInEuro orderPrice = new PriceInEuro(new BigDecimal(0.00));
-
-        public Builder() {
-        }
-
-        public Builder withId(String id) {
-            if (Strings.isNotEmpty(id)) {
-                this.orderId = UUID.fromString(id);
-            } else {
-                this.orderId = UUID.randomUUID();
-            }
-            return this;
-        }
-
-        public Builder addOrderLine(List<OrderLine> orderLines) {
-            this.orderLines = Optional.ofNullable(orderLines).orElse(null);
-            orderLines.forEach(orderLine -> this.orderPrice = this.orderPrice.add(orderLine.getProduct().getPrice().multiply(orderLine.getAmount())));
-            return this;
-        }
-
-        public Order build() {
-            return new Order(this);
-        }
     }
 
     public enum OrderStatus {
