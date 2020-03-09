@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.tvh.bootcamp.testingbootcamp.ordering.infrastructure.InMemoryOrderRepository;
 
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.newOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -22,7 +23,7 @@ public class OrderServiceWithoutMockingTest {
     @Test
     void create_Order() {
         //Arrange
-        Order order = new Order.Builder().build();
+        Order order = newOrder();
 
         //Act
         Order savedOrder = orderService.createOrUpdate(order);
@@ -34,8 +35,8 @@ public class OrderServiceWithoutMockingTest {
     @Test
     void find_Order() {
         //Arrange
-        UUID orderId = UUID.randomUUID();
-        Order order = new Order.Builder().withId(orderId.toString()).build();
+        Order order = newOrder();
+        UUID orderId = order.getOrderId();
         orderService.createOrUpdate(order);
 
         //Act

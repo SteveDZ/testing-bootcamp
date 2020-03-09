@@ -1,14 +1,13 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Order.newOrder;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Product.ENGINE;
 import static com.tvh.bootcamp.testingbootcamp.ordering.domain.Product.SPARK_PLUG;
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -22,13 +21,9 @@ class OrderTest {
 
     @BeforeEach
     public void setUp() {
-        this.orderId = UUID.randomUUID();
-        this.orderLine = OrderLine.forProductAndAmount(ENGINE, 2);
-        List<OrderLine> orderLines = singletonList(orderLine);
-        this.order = new Order.Builder()
-                .withId(orderId.toString())
-                .addOrderLine(orderLines)
-                .build();
+        this.order = newOrder();
+        this.order = this.order.add(ENGINE, 2);
+        this.orderLine = this.order.getOrderLines().get(0);
     }
 
     @Test
