@@ -23,7 +23,7 @@ class OrderTest {
     public void setUp() {
         //Create OrderLine for ENGINE and amount 2
         this.orderLine = forProductAndAmount(ENGINE, 2);
-        //Create Order using the OrderMother#anOrderWithOneLine method
+        //Create Order using the OrderBuilder
         this.order = new OrderBuilder()
                 .withOrderLines(new ArrayList<>(List.of(this.orderLine)))
                 .build();
