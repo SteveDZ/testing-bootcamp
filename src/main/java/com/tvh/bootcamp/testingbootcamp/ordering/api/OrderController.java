@@ -60,7 +60,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<Void> updateOrder(@PathVariable String orderId, @RequestBody OrderResource orderResource) {
+    public ResponseEntity<Void> updateOrder(@RequestBody OrderResource orderResource) {
         this.orderInteractor.createOrUpdate(orderResource.toOrder());
 
         return ResponseEntity.ok().build();
