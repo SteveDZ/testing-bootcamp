@@ -24,7 +24,6 @@ class OrderTest {
         //Create OrderLine for ENGINE and amount 2
 
         //Create Order using the OrderMother#anOrderWithOneLine method
-
     }
 
     @Test
