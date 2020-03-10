@@ -1,6 +1,5 @@
 package com.tvh.bootcamp.testingbootcamp.ordering.domain;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -26,13 +25,11 @@ class OrderTest {
     //Implement @BeforeEach setUp() method and setup Order, OrderLine and OrderId (UUID)
     @BeforeEach
     public void setUp() {
-        //Create OrderId
+        //Create Order using the newOrder factory method
 
-        //Create OrderLine for 2 ENGINES
+        //Add a line using th add method
 
-        //Create an OrderLine List with this 1 orderline
-
-        //Create new Order using the Order.Builder. With order id and add the orderlines.
+        //Initialize the first orderline by getting the orderlines .get(0)
     }
 
     @Test
